@@ -19,9 +19,22 @@ public class FindBinChallenge {
     public static String[] findBin(int number) {
         String[] result = new String[number];
         // Write -- Your -- Code
-        for(int i = 1; i < number; i++){
-            result[i-1] = Integer.toBinaryString(i);
+        Queue<String> q = new Queue<String>(number + 1);
+        q.enqueue("1");
+        for(int i = 0; i < number; i++){
+            result[i] = q.dequeue();
+            String s1 = result[i] + "0";
+            String s2 = result[i] + "1";
+            q.enqueue(s1);
+            q.enqueue(s2);
         }
-        return result; //For number = 3 , result = {"1","10","11"};
+        return result;
+    }
+
+    public static void main(String args[]) {
+
+        String[] output = findBin(3);
+        for(int i = 0; i < 3; i++)
+            System.out.print(output[i] + " ");
     }
 }

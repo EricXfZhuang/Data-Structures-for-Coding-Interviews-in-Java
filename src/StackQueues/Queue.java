@@ -8,10 +8,15 @@ public class Queue<E> {
     private int currentSize;
 
     public Queue(int maxSize){
+        arr = (E[]) new Object[maxSize];
         this.maxSize = maxSize;
         front = 0;
         back = -1;
         currentSize = 0;
+    }
+
+    public int getMaxSize(){
+        return maxSize;
     }
 
     public boolean isEmpty(){
