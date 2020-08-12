@@ -8,18 +8,17 @@ public class CheckBFS {
         // Write - Your - Code
         boolean[] isVisited = new boolean[g.vertices];
         for(int i = 0; i < g.vertices; i++){
-            result += bfs("", g, int source, g.adjacencyList[i].getHeadNode(), isVisited);
+            if(!isVisited[i])
+                result += i;
+                result += bfs("", g, g.adjacencyList[i].getHeadNode(), isVisited);
+            isVisited[i] = true;
         }
         return result;
     }
 
-    public static String bfs(String result, Graph g, int source, DoublyLinkedList.Node root, boolean[] isVisited){
+    public static String bfs(String result, Graph g, DoublyLinkedList.Node root, boolean[] isVisited){
         String temp = "";
-        if()
-        if(root == null){
-            return "";
-        }
-        if(isVisited[(int)root.data]){
+        if(root == null || isVisited[(int)root.data]){
             return "";
         }
         DoublyLinkedList.Node curr = root;
@@ -31,7 +30,7 @@ public class CheckBFS {
         result += temp;
         curr = root;
         while(curr != null){
-            isVisited[(int)root.data] = true;
+            isVisited[(int)curr.data] = true;
             temp = bfs("", g, g.adjacencyList[(int)root.data].getHeadNode(), isVisited);
             result += temp;
             curr = curr.nextNode;
