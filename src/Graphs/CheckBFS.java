@@ -1,5 +1,7 @@
 package Graphs;
 
+import StackQueues.Queue;
+
 public class CheckBFS {
     //Breadth First Traversal of Graph g
     public static String bfs(Graph g) {
@@ -7,35 +9,33 @@ public class CheckBFS {
 
         // Write - Your - Code
         boolean[] isVisited = new boolean[g.vertices];
+        StringBuilder str = new StringBuilder();
         for(int i = 0; i < g.vertices; i++){
             if(!isVisited[i])
-                result += i;
-                result += bfs("", g, g.adjacencyList[i].getHeadNode(), isVisited);
-            isVisited[i] = true;
+                bfs(str, g, i, isVisited);
         }
+        result = str.toString();
         return result;
     }
 
-    public static String bfs(String result, Graph g, DoublyLinkedList.Node root, boolean[] isVisited){
-        String temp = "";
-        if(root == null || isVisited[(int)root.data]){
-            return "";
+    public static void bfs(StringBuilder str, Graph g, int v, boolean[] isVisited){
+        Queue<Integer> q = new Queue<>(g.vertices);
+        isVisited[v] = true;
+        q.enqueue(v);
+        str.append(v);
+        while(!q.isEmpty()){
+            int s = q.dequeue();
+            DoublyLinkedList.Node head = g.adjacencyList[s].getHeadNode();
+            DoublyLinkedList.Node curr = head;
+            while(curr != null){
+                if(!isVisited[(int)curr.data]){
+                    isVisited[(int)curr.data] = true;
+                    str.append(curr.data);
+                    q.enqueue((int)curr.data);
+                }
+                curr = curr.nextNode;
+            }
         }
-        DoublyLinkedList.Node curr = root;
-        while(curr != null){
-            if(!result.contains(String.valueOf(curr.data)) && !temp.contains(String.valueOf(curr.data)))
-                temp += curr.data;
-            curr = curr.nextNode;
-        }
-        result += temp;
-        curr = root;
-        while(curr != null){
-            isVisited[(int)curr.data] = true;
-            temp = bfs("", g, g.adjacencyList[(int)root.data].getHeadNode(), isVisited);
-            result += temp;
-            curr = curr.nextNode;
-        }
-        return result;
     }
 
     public static void main(String args[]) {
