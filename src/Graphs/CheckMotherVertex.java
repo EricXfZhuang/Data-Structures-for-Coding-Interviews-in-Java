@@ -11,45 +11,56 @@ public class CheckMotherVertex {
 
     public static int findMotherVertex(Graph g){
         // Write - Your - Code
-        int[] indegree = new int[g.vertices];
-        int[] outdegree = new int[g.vertices];
-        boolean[] isVisited = new boolean[g.vertices];
-        for(int i = 0; i < g.vertices; i++){
-            if(!isVisited[i]){
-                dfs(g, isVisited, indegree, outdegree, -1, i);
+        // visited[] is used for DFS. Initially all are
+        // initialized as not visited
+        boolean[] visited = new boolean[g.vertices];
+        Arrays.fill(visited, false);
+
+        // To store last finished vertex (or mother vertex)
+        int lastV = 0;
+
+        // Do a DFS traversal and find the last finished vertex
+        for (int i = 0; i < g.vertices; i++) {
+            if (visited[i] == false) {
+                dfs(g, i, visited);
+                lastV = i;
             }
         }
-        System.out.println(Arrays.toString(indegree));
-        System.out.println(Arrays.toString(outdegree));
-        for(int i = 0; i < g.vertices; i++){
-            if(indegree[i] > 0 && outdegree[i] > 0){
-                return i;
+
+        // If there exist mother vertex (or vetices) in given
+        // graph, then lastV must be one (or one of them)
+
+        // Now check if lastV is actually a mother vertex (or graph
+        // has a mother vertex). We basically check if every vertex
+        // is reachable from lastV or not.
+
+        // Reset all values in visited[] as false and do
+        // DFS beginning from lastV to check if all vertices are
+        // reachable from it or not.
+        Arrays.fill(visited, false);
+        dfs(g, lastV, visited);
+
+        for (int i = 0; i < visited.length; i++){
+            if(visited[i] == false){
+                return -1;
             }
         }
-        return -1;
+
+        return lastV;
     }
 
-    public static void dfs(Graph g, boolean[] isVisited, int[] indegree, int[] outdegree, int prev, int cur){
-        System.out.println("prev: " + prev);
-        System.out.println("cur: " + cur);
-        if(prev != -1){
-            if(!isVisited[prev])
-                outdegree[prev]++;
-            indegree[cur]++;
+    public static void dfs(Graph g, int v, boolean[] visited){
+        visited[v] = true;
+        DoublyLinkedList<Integer>.Node head = null;
+        if(g.adjacencyList[v] != null){
+            head = g.adjacencyList[v].getHeadNode();
         }
-        isVisited[cur] = true;
-        System.out.println(Arrays.toString(outdegree));
-        System.out.println(Arrays.toString(indegree));
-        DoublyLinkedList.Node headNode = g.adjacencyList[cur].getHeadNode();
-        DoublyLinkedList.Node currNode = headNode;
-        prev = cur;
-        while(currNode != null){
-            if(!isVisited[(int)currNode.data]){
-                cur = (int)currNode.data;
-                dfs(g, isVisited, indegree, outdegree, prev, cur);
+
+        while(head != null){
+            if(!visited[head.data]){
+                dfs(g, head.data, visited);
             }
-            prev = (int)currNode.data;
-            currNode = currNode.nextNode;
+            head = head.nextNode;
         }
     }
 

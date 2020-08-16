@@ -40,10 +40,11 @@ public class DoublyLinkedList<T> {
         newNode.data = data;
         newNode.nextNode = this.headNode; //Linking newNode to head's nextNode
         newNode.prevNode = null;
-        if (headNode != null)
+        if (headNode != null) {
             headNode.prevNode = newNode;
-        else
+        } else {
             tailNode = newNode;
+        }
         this.headNode = newNode;
         size++;
     }
@@ -96,25 +97,29 @@ public class DoublyLinkedList<T> {
     }
 
     public void deleteAtHead() {
-        if (isEmpty())
+        if (isEmpty()) {
             return;
+        }
 
         headNode = headNode.nextNode;
-        if (headNode == null)
+        if (headNode == null) {
             tailNode = null;
-        else
+        } else {
             headNode.prevNode = null;
+        }
         size--;
     }
 
     public void deleteAtTail() {
-        if (isEmpty())
+        if (isEmpty()) {
             return;
+        }
         tailNode = tailNode.prevNode;
-        if (tailNode == null)
+        if (tailNode == null) {
             headNode = null;
-        else
+        } else {
             tailNode.nextNode = null;
+        }
         size--;
     }
 }
