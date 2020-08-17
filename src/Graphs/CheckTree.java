@@ -17,7 +17,7 @@ public class CheckTree {
         }
 
         if(checkOneParent(g)){
-            return
+            return false;
         }
 
         return true;
@@ -29,9 +29,9 @@ public class CheckTree {
         Arrays.fill(parents, -1);
         for(int i = 0; i < g.vertices; i++){
             if(!visited[i]){
-                if(checkOneParent(g, i, -1, parents,  ))
             }
         }
+        return false;
     }
 
     public static boolean checkOneParent(Graph g, int v, int parent, int[] parents, boolean[] visited){
